@@ -1,0 +1,42 @@
+extends Control 
+
+@onready var background = $Background
+@onready var timer = $Timer
+
+# List of background image paths
+var backgrounds = [
+	"res://Images/testpic.jpg",
+	"res://Images/testpic2.jpg",
+	"res://Images/testpic3.jpg"
+]
+
+var current_index = 0
+
+func _ready():
+	background.modulate.a = 1.0
+	timer.timeout.connect(_on_timer_timeout)
+	change_background()
+
+func _on_timer_timeout():
+	# Fade out
+	var tween = create_tween()
+	tween.tween_property(background, "modulate:a", 0.0, 0.5)
+	tween.tween_callback(Callable(self, "_on_fade_out_done"))
+
+func change_background():
+	var image_path = backgrounds[current_index]
+	var texture = load(image_path)
+	background.texture = texture
+	
+	
+	
+func _on_fade_out_done():
+	# Change image
+	current_index = (current_index + 1) % backgrounds.size()
+	background.texture = load(backgrounds[current_index])
+
+	# Fade in
+	var tween = create_tween()
+	tween.tween_property(background, "modulate:a", 1.0, 0.5)
+
+
