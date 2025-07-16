@@ -1,3 +1,6 @@
+#TIMER NODE IS NEEDED!!!
+#TEXTUREREACT NODE IS NEEDED!!!
+
 extends Control 
 
 @onready var background = $Background
